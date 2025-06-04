@@ -11,6 +11,7 @@ const app = express();
 app.get('/contacts', async (req, res) => {
   const contacts = await getAllContacts();
   const responseBody = {
+    status: 200,
     message: 'Successfully found contacts!',
     data: contacts,
   };
@@ -25,6 +26,7 @@ app.get('/contacts/:contactId', async (req, res, next) => {
   if (!contact) return res.status(404).json({ message: 'Contact not found' });
 
   const responseBody = {
+    status: 200,
     message: `Successfully found contact with id ${contactId}!`,
     data: contact,
   };
