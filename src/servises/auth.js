@@ -33,7 +33,7 @@ export const registerUser = async (payload) => {
     password: encryptedPassword,
   });
 
-  return { user };
+  return user;
 };
 
 export const loginUser = async (payload) => {

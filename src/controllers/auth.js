@@ -19,8 +19,9 @@ const setupSession = (res, session) => {
 };
 
 export const registerUserController = async (req, res) => {
-  console.log({ body: req.body });
   const user = await registerUser(req.body);
+
+  console.log(user);
 
   res.status(201).json({
     status: 201,
