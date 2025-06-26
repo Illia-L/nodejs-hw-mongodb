@@ -9,12 +9,18 @@ import {
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { validateId } from '../middlewares/validateId.js';
 import { validateBody } from '../middlewares/validateBody.js';
-import { createContactSchema, updateContactSchema } from '../validation/contacts.js';
+import {
+  createContactSchema,
+  updateContactSchema,
+} from '../validation/contacts.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const router = Router();
 
+router.use(authenticate);
+
 router
-  .route('/contacts')
+  .route('/')
   .get(ctrlWrapper(getAllContactsController))
   .post(
     validateBody(createContactSchema),
@@ -22,7 +28,7 @@ router
   );
 
 router
-  .route('/contacts/:contactId')
+  .route('/:contactId')
   .get(validateId, ctrlWrapper(getContactByIdController))
   .patch(
     validateId,

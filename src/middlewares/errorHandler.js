@@ -8,7 +8,7 @@ export const errorHandler = (err, req, res, next) => {
 
 const prodErrorHandler = (err, res) => {
   if (err instanceof HttpError) {
-    return res.status(404).json({
+    return res.status(err.statusCode).json({
       status: err.status,
       message: err.name,
       data: err,
