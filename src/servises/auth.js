@@ -53,7 +53,10 @@ export const loginUser = async (payload) => {
 
   if (!user) throw createHttpError(404, 'User not found');
 
-  const isPasswordCorrect = await bcrypt.compare(payload.password, user.password);
+  const isPasswordCorrect = await bcrypt.compare(
+    payload.password,
+    user.password,
+  );
 
   if (!isPasswordCorrect) throw createHttpError(401, 'Unauthorized');
 
@@ -100,10 +103,10 @@ export const refreshUserSession = async ({ sessionId, refreshToken }) => {
   return newSession;
 };
 
-export const requestResetToken = async (email) => {
+export const sendResetToken = async (email) => {
   const user = UsersCollection.findOne({ email });
 
-  if (!user) throw createHttpError(404, 'User not found');
+  if (!user) throw createHttpError(404, 'User not found!');
 
   const resetToken = jwt.sign(
     {
@@ -129,12 +132,19 @@ export const requestResetToken = async (email) => {
     link: `${getEnvVar('APP_DOMAIN')}/reset-password?token=${resetToken}`,
   });
 
-  await sendEmail({
-    from: getEnvVar(SMTP.SMTP_FROM),
-    to: email,
-    subject: 'Reset your password',
-    html,
-  });
+  try {
+    await sendEmail({
+      from: getEnvVar(SMTP.SMTP_FROM),
+      to: email,
+      subject: 'Reset your password',
+      html,
+    });
+  } catch {
+    throw createHttpError(
+      500,
+      'Failed to send the email, please try again later.',
+    );
+  }
 };
 
 export const resetPassword = async (payload) => {
@@ -143,7 +153,8 @@ export const resetPassword = async (payload) => {
   try {
     entries = jwt.verify(payload.token, getEnvVar('JWT_SECRET'));
   } catch (err) {
-    if (err instanceof Error) throw createHttpError(401, err.message);
+    if (err instanceof Error)
+      throw createHttpError(401, 'Token is expired or invalid.');
 
     throw err;
   }
@@ -152,7 +163,7 @@ export const resetPassword = async (payload) => {
     email: entries.email,
   });
 
-  if (!user) throw createHttpError(404, 'User not found');
+  if (!user) throw createHttpError(404, 'User not found.');
 
   const encryptedPassword = await bcrypt.hash(payload.password, 10);
 
@@ -160,4 +171,6 @@ export const resetPassword = async (payload) => {
     { _id: user._id },
     { password: encryptedPassword },
   );
+
+  await SessionsCollection.findOneAndDelete({ userId: user._id });
 };
