@@ -58,19 +58,6 @@ export const getContactByIdController = async (req, res) => {
   res.status(200).json(responseBody);
 };
 
-/* в photo лежить обʼєкт файлу
-		{
-		  fieldname: 'photo',
-		  originalname: 'download.jpeg',
-		  encoding: '7bit',
-		  mimetype: 'image/jpeg',
-		  destination: '/Users/borysmeshkov/Projects/goit-study/students-app/temp',
-		  filename: '1710709919677_download.jpeg',
-		  path: '/Users/borysmeshkov/Projects/goit-study/students-app/temp/1710709919677_download.jpeg',
-		  size: 7
-	  }
-	*/
-
 export const createContactController = async (req, res) => {
   const photo = req.file;
 

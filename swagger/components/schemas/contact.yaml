@@ -1,0 +1,46 @@
+type: object
+properties:
+  _id:
+    description: Contact id
+    type: string
+    example: 65ca67e7ae7f10c88b598384
+  userId:
+    description: The id of the user the contact belongs to
+    type: string
+    example: 65ca67e7ae7f10c88b598384
+  name:
+    description: Contact name
+    type: string
+    example: Jane Simpson
+  phoneNumber:
+    description: Contact phone number
+    type: string
+    example: '(999) 999-99-88'
+  email:
+    description: Contact email
+    type: string
+    example: (999) 999-99-88
+  photo:
+    description: Contact's avatar
+    type: string
+    example: https://res.cloudinary.com/deopqngqk/image/upload/v1751437668/b7lszohxh7hhpfba2o2e.jpg
+  isFavourite:
+    description: Is contact favourite
+    type: boolean
+    example: false
+  contactType:
+    description: 'Types of contact: work, home and personal'
+    type: string
+    enum:
+      - work
+      - home
+      - personal
+    example: personal
+  createdAt:
+    description: The time contact was created
+    type: string
+    example: 2025-07-02T06:18:01.791Z
+  updatedAt:
+    description: The time contact was updated
+    type: string
+    example: 2025-07-02T06:18:01.791Z

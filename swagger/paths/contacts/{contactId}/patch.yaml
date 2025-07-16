@@ -1,0 +1,121 @@
+tags:
+  - Contacts
+summary: Update contact
+operationId: updateContact
+description: Update contact
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: contactId
+    required: true
+    schema:
+      type: string
+      example: '65ca67e7ae7f10c88b598384'
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            description: Contact name
+            type: string
+            example: Jane Simpson
+          phoneNumber:
+            description: Contact phone number
+            type: string
+            example: '(999) 999-99-88'
+          email:
+            description: Contact email
+            type: string
+            example: (999) 999-99-88
+          photo:
+            description: Contact's avatar
+            type: string
+            format: binary
+          isFavourite:
+            description: Is contact favourite
+            type: boolean
+            example: false
+          contactType:
+            description: 'Types of contact: work, home and personal'
+            type: string
+            enum:
+              - work
+              - home
+              - personal
+            example: personal
+responses:
+  '200':
+    description: Success
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully updated a contact
+            data:
+              type: object
+              $ref: ../../../components/schemas/contact.yaml
+  '401':
+    $ref: ../../../components/responses/401.yaml
+  '400':
+    description: Bad request
+    content:
+      application/jcon:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: BadRequestError
+            data:
+              type: object
+              required:
+                - message
+              properties:
+                message:
+                  type: string
+                  example: Please provide Authorization header
+                errors:
+                  type: array
+        examples:
+          missingAuth:
+            summary: Missing Authorization
+            value:
+              status: 400
+              message: BadRequestError
+              data:
+                message: Please provide Authorization header
+          validationError:
+            summary: Joi validation error
+            value:
+              status: 400
+              message: BadRequestError
+              data:
+                message: Bad request
+                errors:
+                  - message: \"phoneNumber\" is not allowed to be empty
+                    path: ['phoneNumber']
+                    type: string.empty
+                    context:
+                      label: phoneNumber
+                      value: ''
+                      key: phoneNumber
