@@ -21,4 +21,4 @@ content:
           properties:
             message:
               type: string
-              example: Please provide Authorization header
+              example: Invalid contact id
