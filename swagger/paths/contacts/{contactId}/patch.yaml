@@ -93,29 +93,33 @@ responses:
               properties:
                 message:
                   type: string
-                  example: Please provide Authorization header
+                  example: Bad request
                 errors:
                   type: array
-        examples:
-          missingAuth:
-            summary: Missing Authorization
-            value:
-              status: 400
-              message: BadRequestError
-              data:
-                message: Please provide Authorization header
-          validationError:
-            summary: Joi validation error
-            value:
-              status: 400
-              message: BadRequestError
-              data:
-                message: Bad request
-                errors:
-                  - message: \"phoneNumber\" is not allowed to be empty
-                    path: ['phoneNumber']
-                    type: string.empty
-                    context:
-                      label: phoneNumber
-                      value: ''
-                      key: phoneNumber
+                  items:
+                    type: object
+                    required:
+                      - message
+                      - path
+                      - type
+                    properties:
+                      message:
+                        type: string
+                        example: '"email" is required'
+                      path:
+                        type: array
+                        items:
+                          type: string
+                          example: 'email'
+                      type:
+                        type: string
+                        example: any.required
+                      context:
+                        type: object
+                        properties:
+                          label:
+                            type: string
+                            example: name
+                          key:
+                            type: string
+                            example: name

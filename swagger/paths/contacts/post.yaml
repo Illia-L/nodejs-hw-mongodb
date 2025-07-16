@@ -89,7 +89,7 @@ responses:
               properties:
                 message:
                   type: string
-                  example: Please provide Authorization header
+                  example: Bad request
                 errors:
                   type: array
                   items:
