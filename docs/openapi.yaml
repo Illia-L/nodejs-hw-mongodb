@@ -16,10 +16,9 @@ info:
 tags:
   - name: Contacts
     description: Operations with contacts
-  # теги, що ви будете використовувати
 servers:
+  - url: https://contacts-app-jxb3.onrender.com
   - url: http://localhost:3000
-  - url: '' #посилання на задеплоєний сайт
 paths:
   /contacts:
     get:
@@ -33,7 +32,6 @@ paths:
       $ref: '../swagger/paths/contacts/{contactId}/patch.yaml'
     delete:
       $ref: '../swagger/paths/contacts/{contactId}/delete.yaml'
-  # тут будуть посилання на ендпоінти
 components:
   securitySchemes:
     bearerAuth:
